@@ -1,12 +1,17 @@
 [package]
+edition = "2021"
 name = "rischialess"
 version = "0.1.0"
-edition = "2021"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[lib]
+crate-type = ["cdylib"]
 
 [dependencies]
-flawless = { version = "1.0.0-alpha.10", features = ["clap", "dirs", "reqwest"] }
-serde = { version = "1.0", features = ["derive"] }
-serde_json = "1.0.108"
+flawless = "1.0.0-alpha.10+finnish-reindeer"
+time = "0.3.31"
 chrono = { version = "0.4.31", features = ["serde"] }
+http = { version = "0.2.11", features = [] }
+serde = { version = "1.0.195", features = ["derive"] }
+url = { version = "2.5.0", features = [] }
+serde_json = { version = "1.0.111", features = [] }
+diff = "0.1.13"
