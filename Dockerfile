@@ -7,27 +7,14 @@ RUN \
   --mount=type=cache,target=/app/target/ \
   --mount=type=cache,target=/usr/local/cargo/registry/ \
   --mount=type=ssh \
+  mkdir -p /root/.cargo/bin/ && \
   rustup target add wasm32-unknown-unknown && \
-  cargo build --release --target=wasm32-unknown-unknown && \
-  cargo build --release && \
-  cp ./target/wasm32-unknown-unknown/release/librischialess.rlib /rischialess
+  cargo install flawless --version 1.0.0-alpha.10 --features="cargo-flw"
 
-
-FROM debian:bookworm-slim AS final
-RUN adduser \
-  --disabled-password \
-  --gecos "" \
-  --home "/nonexistent" \
-  --shell "/sbin/nologin" \
-  --no-create-home \
-  --uid "10001" \
-  appuser
-COPY --from=builder /rischialess /usr/local/bin
-RUN chown appuser /usr/local/bin/rischialess
-#COPY --from=builder /app/config /opt/rischialess/config
-RUN #chown -R appuser /opt/rischialess
-USER appuser
-ENV RUST_LOG="rischialess=debug,info"
-WORKDIR /opt/rischialess
-ENTRYPOINT ["rischialess"]
 EXPOSE 8080/tcp
+EXPOSE 27288/tcp
+ENTRYPOINT ["/root/.cargo/bin/flawless", "up"]
+
+
+FROM builder
+ENTRYPOINT ["cargo", "flw", "run", "risk_central", "--input", "{\"vat_code\":\"01234567890\",\"ndg\":\"333444\"}"]
