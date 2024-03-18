@@ -9,7 +9,7 @@ RUN \
   --mount=type=ssh \
   mkdir -p /root/.cargo/bin/ && \
   rustup target add wasm32-unknown-unknown && \
-  cargo install flawless --version 1.0.0-alpha.10 --features="cargo-flw"
+  cargo install flawless --version 1.0.0-alpha.16 --features="cargo-flw"
 
 EXPOSE 8080/tcp
 EXPOSE 27288/tcp
@@ -17,4 +17,4 @@ ENTRYPOINT ["/root/.cargo/bin/flawless", "up"]
 
 
 FROM builder
-ENTRYPOINT ["cargo", "flw", "run", "risk_central", "--input", "{\"vat_code\":\"01234567890\",\"ndg\":\"333444\"}"]
+ENTRYPOINT ["cargo", "flw", "run", "risk-central", "--input", "{\"vat_code\":\"01234567890\",\"ndg\":\"333444\"}"]

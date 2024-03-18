@@ -1,7 +1,7 @@
 use std::thread::sleep;
 use std::time::Duration;
 
-use chrono::NaiveDate;
+use chrono::{DateTime, Local, NaiveDate};
 use flawless::workflow;
 use flawless_http::{get, post};
 use serde::{Deserialize, Serialize};
@@ -37,7 +37,7 @@ pub fn risk_central(input: Input) {
 #[derive(Debug, Serialize, Deserialize)]
 struct Input {
     ndg: String,
-    tax_code: String,
+    vat_code: String,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -59,7 +59,8 @@ trait IsRecent {
 
 impl IsRecent for NaiveDate {
     fn is_recent(&self) -> bool {
-        let today = chrono::offset::Local::now().naive_local().date();
+        let today: DateTime<Local> = flawless::time::now().into();
+        let today = today.naive_local().date();
         let diff = today.signed_duration_since(*self).num_days();
         diff < 30
     }
@@ -68,6 +69,5 @@ impl IsRecent for NaiveDate {
 #[cfg(test)]
 mod tests {
     #[test]
-    fn it_works() {
-    }
+    fn it_works() {}
 }
