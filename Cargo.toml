@@ -9,8 +9,12 @@ crate-type = ["cdylib"]
 [dependencies]
 flawless = "1.0.0-alpha.16"
 flawless-http = "1.0.0-alpha.16"
-chrono = { version = "0.4.31", features = ["serde"] }
 serde = { version = "1.0.195", features = ["derive"] }
 url = { version = "2.5.0", features = [] }
 serde_json = { version = "1.0.111", features = [] }
 diff = "0.1.13"
+
+chrono = { version = "0.4.31", default-features = false, features = [
+    "serde",
+    "clock",
+] }
